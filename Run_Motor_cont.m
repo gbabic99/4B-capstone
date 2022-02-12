@@ -1,4 +1,4 @@
-function Run_Motor(h,dtheta,Tire_Diam,Start_Freq, Stop_Freq, Data_Name, Num_Points, IF_Band, IP_Addr, Cal_file)
+function Run_Motor_cont(h,dtheta,Tire_Diam,Start_Freq, Stop_Freq, Data_Name, Num_Points, IF_Band, IP_Addr, Cal_file)
 
 % attempt at making scan continuous
 
