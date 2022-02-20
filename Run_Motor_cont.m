@@ -24,9 +24,8 @@ while(count < samples)
         [freq,data] = VNA_Meas(Start_Freq, Stop_Freq, Num_Points, IF_Band, IP_Addr, Cal_file);
         DATA_FILE (count,:)= data;
         disp([' Step ',num2str(count)]) 
+        count = count + 1;
     end
-  count = count + 1;
-    
 end
 
 
