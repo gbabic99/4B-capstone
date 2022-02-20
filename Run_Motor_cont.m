@@ -1,9 +1,10 @@
-function Run_Motor_cont(h,dtheta,Tire_Diam,samples,Start_Freq, Stop_Freq, Data_Name, Num_Points, IF_Band, IP_Addr, Cal_file)
+function Run_Motor_cont(h,dtheta,Tire_Diam,motor_speed,samples,Start_Freq, Stop_Freq, Data_Name, Num_Points, IF_Band, IP_Addr, Cal_file)
 
 % attempt at making scan continuous
 
 samples = samples.value;
 dtheta = dtheta.value;
+speed = motor_speed.value;
 Freq1 = Start_Freq.Value;
 Freq2 = Stop_Freq.Value;
 FreqPoints = Num_Points.Value;
@@ -14,6 +15,7 @@ TireDiam = Tire_Diam.Value;
 
 h.SetRelMoveDist(0,dtheta);
 h.MoveRelative(0,1==0);
+h.SetVelParams(0,3,speed); % need to figure out how varying affects stuff
 
 count = 0;
 while(count < samples)
