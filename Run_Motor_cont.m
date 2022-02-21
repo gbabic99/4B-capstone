@@ -10,24 +10,22 @@ Freq2 = Stop_Freq.Value;
 FreqPoints = Num_Points.Value;
 TireDiam = Tire_Diam.Value;
 
-% m_degree = 10; test values
-% s_period = 1;
+increment = dtheta/samples;         % angle scanned per sample
+s_period = dtheta/(samples*speed);  % time between samples
+acc = speed/s_period;               % acceleration from 0 to max
 
+h.SetVelParams(0,0, acc, speed);
 h.SetRelMoveDist(0,dtheta);
 h.MoveRelative(0,1==0);
-h.SetVelParams(0,3,speed); % need to figure out how varying affects stuff
 
-count = 0;
-while(count < samples)
-    pos = h.GetPosition_Position(0);
-    if h.GetPosition_Position(0) - pos == dtheta/samples
-        [freq,data] = VNA_Meas(Start_Freq, Stop_Freq, Num_Points, IF_Band, IP_Addr, Cal_file);
-        DATA_FILE (count,:)= data;
-        disp([' Step ',num2str(count)]) 
-        count = count + 1;
-    end
+count = 1;
+while(count < samples + 1)
+    [freq,data] = VNA_Meas(Start_Freq, Stop_Freq, Num_Points, IF_Band, IP_Addr, Cal_file);
+    DATA_FILE (count,:)= data;
+    disp([' Step ',num2str(count)]) 
+    count = count + 1;
+    pause(s_period);
 end
-
 
 save(Data_Name.Value,'freq','DATA_FILE');
 disp('Done Scanning');
@@ -36,7 +34,7 @@ disp('Done Scanning');
 %load('data.mat');
 %[z,x,map_dB] = image_processing(Freq1,Freq2,(Freq2-Freq1)/(FreqPoints-1),dx,0,1,'data.mat');
 
-final_image_processing(Freq1,Freq2,StepSize,TireDiam,Num_Steps,sprintf('%s',Data_Name.Value,'.mat'));
+final_image_processing(Freq1,Freq2,increment,TireDiam,samples,sprintf('%s',Data_Name.Value,'.mat'));
 
 % [z,x,map_dB] = image_processing(Freq1,Freq2,(Freq2-Freq1)/(FreqPoints-1),dx,0,1,sprintf('%s',Data_Name.Value,'.mat'));
 % final_image(z, x, map_dB);
